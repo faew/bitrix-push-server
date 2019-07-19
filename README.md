@@ -20,14 +20,17 @@ Bitrix Virtual Appliance 7.1-7.2 (Bitrix Push server 1.0)
 
 #### Server command publish URL:
 Message sender path: https://example.com/bitrix/pub/
+
 Signature code for server interaction: KEY from install
 
 #### Command reading URL for modern browsers
 Message listener path (HTTP): http://#DOMAIN#/bitrix/sub/
+
 Message listener path (HTTPS): https://#DOMAIN#/bitrix/sub/
 
 #### Command reading URL for Web Socket enabled browsers
 Message listener path (HTTP): ws://#DOMAIN#/bitrix/subws/
+
 Message listener path (HTTPS): wss://#DOMAIN#/bitrix/subws/
 
 
