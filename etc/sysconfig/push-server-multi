@@ -15,3 +15,5 @@ WS_PORT=1337
 PUBPATH=/bitrix/pub/
 SUBPATH=/bitrix/sub/
 SUBWSPATH=/bitrix/subws/
+REDIS_SOCK=/var/run/redis/redis.sock
+WS_HOST=127.0.0.1
