@@ -154,9 +154,9 @@ start_service(){
     pid_file=$VAR_DIR/$pid_name
     service_type=$(echo $template_name | awk -F'-' '{print $3}')
     for service_id in `seq 0 ${service_id}`; do
-        log_file=$VAR_DIR/$service_type-$service_port.log
-
         service_port=${service_base}${service_id}
+	log_file=$VAR_DIR/$service_type-$service_port.log
+
         cfgf=$(echo "$template_file" | sed -e "s/__PORT__/$service_port/")
         pidf=$(echo "$pid_file" | sed -e "s/__PORT__/$service_port/")
 
