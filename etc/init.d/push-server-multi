@@ -63,6 +63,8 @@ to_log(){
 [[ -z $SUBPATH ]]   && SUBWSPATH="/bitrix/subws/"
 [[ -z $SUBWSPATH ]]   && SUBPATH="/bitrix/sub/"
 [[ -z $PUBPATH ]]   && PUBPATH="/bitrix/pub/"
+[[ -z $RESTPATH ]]   && RESTPATH="/bitrix/rest/"
+
 
 [[ ! -d $VAR_DIR ]] && mkdir -p $VAR_DIR && chown ${USER}:root $VAR_DIR
 
@@ -91,6 +93,7 @@ process_template(){
 				s/__WS_PORT__/$WS_PORT/g;
 				s:__PUBPATH__:$PUBPATH:g;
 				s:__SUBPATH__:$SUBPATH:g;
+				s:__RESTPATH__:$RESTPATH:g;
 				s:__SUBWSPATH__:$SUBWSPATH:g;
 				s:__REDIS_SOCK__:$REDIS_SOCK:g;
 				s:__IP_LIST__:$(printf "%q" $IP_LIST):g;
@@ -140,12 +143,12 @@ status_services(){
         status_service "$TMPL_PUB" "$ID_PUB" "$BASE_PUB" "$PID_PUB"
 }
 
-
 start_service(){
     template_name=$1
     service_id=$2
     service_base=$3
     pid_name=$4
+	run_type=${5:-initd}
 
     template_file=$CFG_DIR/$template_name
     pid_file=$VAR_DIR/$pid_name
@@ -168,10 +171,16 @@ start_service(){
         else
             # start process
             pushd $HG_DIR 1>/dev/null 2>&1
-            sudo -u $USER -H /bin/bash \
-                -c "( node server.js --config $cfgf \
-                1>$log_file 2>&1 ) &" 
-            rtn=$?
+			if [[ $run_type == "initd" ]]; then
+				sudo -u $USER -H /bin/bash \
+					-c "( node server.js --config $cfgf \
+					1>$log_file 2>&1 ) &" 
+				rtn=$?
+			else
+                ( node server.js --config $cfgf \
+					1>$log_file 2>&1 ) & 
+				rtn=$?
+			fi
             to_log "start rtn_code=$rtn"
 
             if [[ -z $rtn ]]; then
@@ -195,12 +204,13 @@ start_service(){
 # start services
 start_services(){
     SERVICE=${1:-all}
+    TYPE=${2:-initd}
 
     [[ ( "$SERVICE" == "all" ) || ( "$SERVICE" == "sub" ) ]] && \
-        start_service "$TMPL_SUB" "$ID_SUB" "$BASE_SUB" "$PID_SUB"
+        start_service "$TMPL_SUB" "$ID_SUB" "$BASE_SUB" "$PID_SUB" "$TYPE"
 
     [[ ( "$SERVICE" == "all" ) || ( "$SERVICE" == "pub" ) ]] && \
-        start_service "$TMPL_PUB" "$ID_PUB" "$BASE_PUB" "$PID_PUB"
+        start_service "$TMPL_PUB" "$ID_PUB" "$BASE_PUB" "$PID_PUB" "$TYPE"
 
 }
 
@@ -241,6 +251,7 @@ stop_services(){
 case ${1} in
     "update_configs") generate_config ${2} ;;
     "start") start_services ${2} ;;
+    "systemd_start") start_services "${2}" "systemd" ;;
     "status") status_services ${2} ;;
     "stop") stop_services ${2} ;;
     "restart") 

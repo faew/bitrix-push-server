@@ -3,8 +3,10 @@ Description=RTC service
 After=redis.target
 
 [Service]
+User=bitrix
+Group=bitrix
 Type=forking
-ExecStart=/etc/init.d/push-server-multi start
+ExecStart=/etc/init.d/push-server-multi systemd_start
 ExecStop=/etc/init.d/push-server-multi stop
 WorkingDirectory=/opt/push-server
 Restart=always
