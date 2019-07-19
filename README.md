@@ -34,7 +34,7 @@ Message listener path (HTTP): ws://#DOMAIN#/bitrix/subws/
 Message listener path (HTTPS): wss://#DOMAIN#/bitrix/subws/
 
 
-Init repo with public code
+### Init repo with public code
 http://repos.1c-bitrix.ru/yum/el/7/x86_64/push-server-1.0.0-4.el7.centos.noarch.rpm
 
 Make it work in modern CentOS without BitrixVM
