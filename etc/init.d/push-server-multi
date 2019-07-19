@@ -100,6 +100,7 @@ process_template(){
 			"> $dest_file
 
         chown -R ${USER}:root $dest_file
+	chmod 440 $dest_file
         echo "$dest_file"
     done
 }
