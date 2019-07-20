@@ -40,6 +40,7 @@ Build from Dockerfile
 docker build --rm --no-cache -t faew/bitrix-push-server .
 ```
 MODE=pub/sub
+
 SECURITY_KEY=Signature in bitrix configuration
 
 ```yaml
