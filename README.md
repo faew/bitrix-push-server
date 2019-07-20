@@ -72,8 +72,8 @@ Use it for balancer configuration.
 
 ```
    <Proxy "balancer://nodejs_subws">
-    BalancerMember "ws://push-pub01:80"
-    BalancerMember "ws://push-pub02:80"
+    BalancerMember "ws://push-sub01:80"
+    BalancerMember "ws://push-sub02:80"
    </Proxy>
 ```
 
