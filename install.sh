@@ -18,8 +18,8 @@ cp -R ./etc/init.d/* /etc/init.d/
 cp -R ./etc/push-server/ /etc/
 cp -R ./etc/sysconfig/* /etc/sysconfig/
 chmod 440 /etc/sysconfig/push-server-multi
-chown bitrix:root /etc/sysconfig/push-server-multi
 useradd --no-create-home --system --shell /usr/sbin/nologin bitrix
+chown bitrix:root /etc/sysconfig/push-server-multi
 cp -R ./opt/* /opt/
 cp -R ./usr/* /usr/
 systemctl enable push-server
